@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Composant Cartes de Prix Réutilisables</title>
+    <style>
+        /* Style général de la page */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            gap: 20px;
+            flex-wrap: wrap; /* Permet aux cartes de passer à la ligne sur mobile */
+        }
+
+        /* Conteneur de la carte de prix modernisé */
+        .pricing-card {
+            width: 300px;
+            background-color: #ffffff;
+            border-radius: 12px; /* Coins arrondis plus modernes */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Ombre plus douce */
+            padding: 30px 24px;
+            text-align: center; /* Éléments centrés pour un meilleur équilibre visuel */
+            border: 1px solid #eef2f5;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Effet de survol sur la carte */
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 10px 0;
+        }
+
+        .price {
+            font-size: 32px; /* Prix plus visible */
+            font-weight: bold;
+            color: #10b981; /* Vert émeraude moderne */
+            margin: 0 0 20px 0;
+        }
+
+        .features {
+            list-style: none;
+            padding-left: 0;
+            margin: 0 0 30px 0;
+            text-align: left; /* Les caractéristiques restent alignées à gauche pour la lisibilité */
+        }
+
+        .features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .features li:last-child {
+            border-bottom: none; /* Supprime la bordure sur le dernier élément */
+        }
+
+        /* Bouton interactif modernisé */
+        .btn {
+            background: #2563eb; /* Bleu moderne */
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%; /* Bouton pleine largeur */
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Les cartes seront injectées ici dynamiquement par le JavaScript -->
+    <div id="pricing-container" style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;"></div>
+
+    <script>
+        /**
+         * Composant réutilisable pour générer une carte de prix
+         * @param {string} titre - Le nom du forfait
+         * @param {string} prix - Le tarif affiché
+         * @param {Array<string>} caracteristiques - Liste des avantages inclus
+         */
+        function creerCartePrix(titre, prix, caracteristiques) {
+            // 1. Création de la liste HTML des caractéristiques
+            let listeFeatures = "";
+            caracteristiques.forEach(feature => {
+                listeFeatures += `<li><i class="fas fa-check" style="color: #10b981; margin-right: 8px;"></i> ${feature}</li>`;
+            });
+
+            // 2. Assemblage du modèle HTML de la carte (Correction de la balise h2 incluse)
+            const carteHTML = `
+                <div class="pricing-card">
+                    <h2 class="title">${titre}</h2>
+                    <p class="price">${prix}</p>
+                    <ul class="features">
+                        ${listeFeatures}
+                    </ul>
+                    <button class="btn" onclick="alert('Merci d\\'avoir choisi le ${titre} !')">Démarrer l'essai</button>
+                </div>
+            `;
+            
+            return carteHTML;
+        }
+
+        // 3. UTILISATION ET INJECTION DU COMPOSANT
+        const container = document.getElementById("pricing-container");
+
+        // Génération instantanée de 3 forfaits différents et personnalisés
+        const forfaitEssentiel = creerCartePrix("Forfait de Base", "9,99 $/mois", [
+            "1 Go de stockage",
+            "Assistance de base",
+            "Toutes les fonctionnalités principales"
+        ]);
+
+        const forfaitStandard = creerCartePrix("Forfait Avancé", "19,99 $/mois", [
+            "50 Go de stockage",
+            "Assistance prioritaire 24/7",
+            "Fonctionnalités IA incluses",
+            "Sécurité renforcée"
+        ]);
+
+        const forfaitPro = creerCartePrix("Forfait Pro", "49,99 $/mois", [
+            "Stockage illimité",
+            "Gestionnaire de compte dédié",
+            "Accès API complet",
+            "Personnalisation marque blanche"
+        ]);
+
+        // Injection des composants dans la page web
+        container.innerHTML = forfaitEssentiel + forfaitStandard + forfaitPro;
+    </script>
+
+</body>
+</html>
